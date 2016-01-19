@@ -1,5 +1,5 @@
 
-from south.db import db
+import db
 from django.db import models
 from djangoratings.models import *
 
@@ -106,7 +106,7 @@ class Migration:
             'date_added': ('django.db.models.fields.DateTimeField', [], {'default': 'datetime.datetime.now'}),
             'date_changed': ('django.db.models.fields.DateTimeField', [], {'default': 'datetime.datetime.now'}),
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'ip_address': ('django.db.models.fields.IPAddressField', [], {'max_length': '15'}),
+            'ip_address': ('django.db.models.fields.GenericIPAddressField', [], {'max_length': '15'}),
             'key': ('django.db.models.fields.CharField', [], {'max_length': '32'}),
             'object_id': ('django.db.models.fields.PositiveIntegerField', [], {}),
             'score': ('django.db.models.fields.IntegerField', [], {}),
