@@ -4,19 +4,17 @@ Template tags for Django
 # TODO: add in Jinja tags if Coffin is available
 
 from django import template
-from django.contrib.contenttypes.models import ContentType
 from django.db.models import ObjectDoesNotExist
 
-from djangoratings.models import Vote
-
 register = template.Library()
+
 
 class RatingByRequestNode(template.Node):
     def __init__(self, request, obj, context_var):
         self.request = request
         self.obj, self.field_name = obj.split('.')
         self.context_var = context_var
-    
+
     def render(self, context):
         try:
             request = template.resolve_variable(self.request, context)
@@ -31,6 +29,7 @@ class RatingByRequestNode(template.Node):
             context[self.context_var] = 0
         return ''
 
+
 def do_rating_by_request(parser, token):
     """
     Retrieves the ``Vote`` cast by a user on a particular object and
@@ -41,7 +40,7 @@ def do_rating_by_request(parser, token):
     
         {% rating_by_request request on instance as vote %}
     """
-    
+
     bits = token.contents.split()
     if len(bits) != 6:
         raise template.TemplateSyntaxError("'%s' tag takes exactly five arguments" % bits[0])
@@ -50,7 +49,10 @@ def do_rating_by_request(parser, token):
     if bits[4] != 'as':
         raise template.TemplateSyntaxError("fourth argument to '%s' tag must be 'as'" % bits[0])
     return RatingByRequestNode(bits[1], bits[3], bits[5])
+
+
 register.tag('rating_by_request', do_rating_by_request)
+
 
 class RatingByUserNode(RatingByRequestNode):
     def render(self, context):
@@ -67,6 +69,7 @@ class RatingByUserNode(RatingByRequestNode):
             context[self.context_var] = 0
         return ''
 
+
 def do_rating_by_user(parser, token):
     """
     Retrieves the ``Vote`` cast by a user on a particular object and
@@ -77,7 +80,7 @@ def do_rating_by_user(parser, token):
     
         {% rating_by_user user on instance as vote %}
     """
-    
+
     bits = token.contents.split()
     if len(bits) != 6:
         raise template.TemplateSyntaxError("'%s' tag takes exactly five arguments" % bits[0])
@@ -86,4 +89,6 @@ def do_rating_by_user(parser, token):
     if bits[4] != 'as':
         raise template.TemplateSyntaxError("fourth argument to '%s' tag must be 'as'" % bits[0])
     return RatingByUserNode(bits[1], bits[3], bits[5])
+
+
 register.tag('rating_by_user', do_rating_by_user)

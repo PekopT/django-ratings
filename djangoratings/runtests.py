@@ -1,6 +1,5 @@
 #!/usr/bin/env python
 import sys
-
 from os.path import dirname, abspath
 
 from django.conf import settings

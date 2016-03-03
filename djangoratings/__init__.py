@@ -3,6 +3,7 @@ import warnings
 
 __version__ = (0, 3, 7)
 
+
 def _get_git_revision(path):
     revision_file = os.path.join(path, 'refs', 'heads', 'master')
     if not os.path.exists(revision_file):
@@ -12,6 +13,7 @@ def _get_git_revision(path):
         return fh.read()
     finally:
         fh.close()
+
 
 def get_revision():
     """
@@ -25,12 +27,15 @@ def get_revision():
         return _get_git_revision(path)
     return None
 
+
 __build__ = get_revision()
+
 
 def lazy_object(location):
     def inner(*args, **kwargs):
         parts = location.rsplit('.', 1)
-        warnings.warn('`djangoratings.%s` is deprecated. Please use `%s` instead.' % (parts[1], location), DeprecationWarning)
+        warnings.warn('`djangoratings.%s` is deprecated. Please use `%s` instead.' % (parts[1], location),
+                      DeprecationWarning)
         try:
             imp = __import__(parts[0], globals(), locals(), [parts[1]], -1)
         except:
@@ -39,7 +44,9 @@ def lazy_object(location):
         if callable(func):
             return func(*args, **kwargs)
         return func
+
     return inner
+
 
 RatingField = lazy_object('djangoratings.fields.RatingField')
 AnonymousRatingField = lazy_object('djangoratings.fields.AnonymousRatingField')
