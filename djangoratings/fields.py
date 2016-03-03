@@ -3,6 +3,10 @@ from datetime import datetime
 from django.conf import settings
 from django.db.models import IntegerField, PositiveIntegerField
 
+from djangoratings import forms
+from djangoratings.exceptions import CannotDeleteVote, InvalidRating, AuthRequired
+from djangoratings.models import Vote, Score
+
 if 'django.contrib.contenttypes' not in settings.INSTALLED_APPS:
     raise ImportError("djangoratings requires django.contrib.contenttypes in your INSTALLED_APPS")
 

@@ -6,9 +6,9 @@ from django.contrib.auth.models import User
 from django.contrib.contenttypes.models import ContentType
 from django.db import models
 
-from exceptions import *
-from fields import AnonymousRatingField, RatingField
-from models import Vote, SimilarUser, IgnoredObject
+from djangoratings.exceptions import *
+from djangoratings.fields import AnonymousRatingField, RatingField
+from djangoratings.models import Vote, SimilarUser, IgnoredObject
 
 settings.RATINGS_VOTES_PER_IP = 1
 
@@ -18,7 +18,7 @@ class RatingTestModel(models.Model):
     rating2 = RatingField(range=2, can_change_vote=False)
 
     def __unicode__(self):
-        return unicode(self.pk)
+        return self.pk
 
 
 class RatingTestCase(unittest.TestCase):
