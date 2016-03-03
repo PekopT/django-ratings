@@ -1,13 +1,7 @@
 from django.db.models import IntegerField, PositiveIntegerField
 from django.conf import settings
 
-import forms
-import itertools
 from datetime import datetime
-
-from models import Vote, Score
-from default_settings import RATINGS_VOTES_PER_IP
-from exceptions import *
 
 if 'django.contrib.contenttypes' not in settings.INSTALLED_APPS:
     raise ImportError("djangoratings requires django.contrib.contenttypes in your INSTALLED_APPS")
@@ -27,7 +21,7 @@ except ImportError:
     now = datetime.now
 
 def md5_hexdigest(value):
-    return md5(value).hexdigest()
+    return md5(value.encode('utf-8')).hexdigest()
 
 class Rating(object):
     def __init__(self, score, votes):
@@ -180,7 +174,6 @@ class RatingManager(object):
         except Vote.DoesNotExist:
             if delete:
                 raise CannotDeleteVote("attempt to find and delete your vote for %s is failed" % (self.field.name,))
-            if getattr(settings, 'RATINGS_VOTES_PER_IP', RATINGS_VOTES_PER_IP):
                 num_votes = Vote.objects.filter(
                     content_type=kwargs['content_type'],
                     object_id=kwargs['object_id'],

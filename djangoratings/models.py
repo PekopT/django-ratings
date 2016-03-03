@@ -3,14 +3,15 @@ from datetime import datetime
 from django.db import models
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.contenttypes.fields import GenericForeignKey
-from django.contrib.auth.models import User
+from djangoratings.managers import VoteManager, SimilarUserManager
+from django.contrib.auth import get_user_model
+
+User = get_user_model()
 
 try:
     from django.utils.timezone import now
 except ImportError:
     now = datetime.now
-
-from managers import VoteManager, SimilarUserManager
 
 class Vote(models.Model):
     content_type    = models.ForeignKey(ContentType, related_name="votes")
@@ -77,7 +78,7 @@ class SimilarUser(models.Model):
         unique_together = (('from_user', 'to_user'),)
 
     def __unicode__(self):
-        print u"%s %s similar to %s" % (self.from_user, self.exclude and 'is not' or 'is', self.to_user)
+        print(u"%s %s similar to %s" % (self.from_user, self.exclude and 'is not' or 'is', self.to_user))
 
 class IgnoredObject(models.Model):
     user            = models.ForeignKey(User)
