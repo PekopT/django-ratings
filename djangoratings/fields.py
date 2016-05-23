@@ -4,7 +4,7 @@ from django.conf import settings
 from django.db.models import IntegerField, PositiveIntegerField
 
 from djangoratings import forms
-from djangoratings.exceptions import CannotDeleteVote, InvalidRating, AuthRequired
+from djangoratings.exceptions import CannotDeleteVote, InvalidRating, AuthRequired, CannotChangeVote
 from djangoratings.models import Vote, Score
 
 if 'django.contrib.contenttypes' not in settings.INSTALLED_APPS:
